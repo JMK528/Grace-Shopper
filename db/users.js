@@ -17,6 +17,7 @@ try {
     delete user.password
     return user;
   }
+  console.log(user)
   return user;
   } catch(err) {
     console.log('createUser-users.js FAILED', err)
@@ -91,13 +92,13 @@ async function getUserById(userId) {
 }
 
 async function getUserByUsername(username) {
-console.log("inside usernAME",username)
+console.log(username, 'line 95 in getuserbyusername')
   const { rows: [user] } = await client.query(`
       SELECT *
       FROM users
       WHERE username=$1;
     `, [username]);
-console.log("after query",user)
+console.log(username, 'line 101')
   return user;
 }
 

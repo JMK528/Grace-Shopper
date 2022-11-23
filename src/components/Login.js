@@ -4,41 +4,39 @@ import { loginUser } from '../api'
 const Login = ({ setToken, navigate }) => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-    
+
     const handleSubmit = async () => {
         try {
-
-        const results = await loginUser(username, password)
-            console.log(results)
+            const results = await loginUser(username, password)
             if (results.token) {
-            setToken(results.token)
-            window.localStorage.setItem('token', results.token)
-            navigate('/')
-        } 
-    } catch (err) {
-            console.log('Error logging in')
+                setToken(results.token)
+                window.localStorage.setItem('token', results.token)
+                navigate('/')
+                console.log(token)
+            }
+        } catch (err) {
+            console.log('Error logging in', err)
         }
     }
 
     return (
         <form onSubmit={(event) => {
-            event.preventDefault();
+            // event.preventDefault();
             handleSubmit()
         }}>
             <h1>Login</h1>
             <input
-            type='text'
-            placeholder='Enter Username'
-            onChange={(event) => setUsername(event.target.value)}
+                type='text'
+                placeholder='Enter Username'
+                onChange={(event) => setUsername(event.target.value)}
             />
             <input
-            type='password'
-            placeholder='Enter Password'
-            onChange={(event) => setPassword(event.target.value)}
+                type='password'
+                placeholder='Enter Password'
+                onChange={(event) => setPassword(event.target.value)}
             />
             <button type='submit'>Login</button>
         </form>
-
     )
 }
 

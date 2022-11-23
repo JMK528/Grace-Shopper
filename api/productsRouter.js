@@ -6,8 +6,6 @@ const {
   getProductById,
   deleteProduct } = require('../db');
 
-const { requireAdmin } = require('./utils');
-
 const productsRouter = express.Router();
 
 productsRouter.get('/', async (req, res, next) => {
@@ -23,7 +21,7 @@ productsRouter.get('/', async (req, res, next) => {
   }
 });
 
-productsRouter.post('/create-product', requireAdmin, async (req, res, next) => {
+productsRouter.post('/create-product', async (req, res, next) => {
   try {
     const product = await createProduct({
       title,
@@ -33,7 +31,7 @@ productsRouter.post('/create-product', requireAdmin, async (req, res, next) => {
       // req.body instead?
     })
 
-    if (product && requireAdmin) {
+    if (product) {
       res.send(product)
     }
   } catch (err) {
@@ -41,7 +39,7 @@ productsRouter.post('/create-product', requireAdmin, async (req, res, next) => {
   }
 });
 
-productsRouter.patch('/:productId', requireAdmin, async (req, res, next) => {
+productsRouter.patch('/:productId', async (req, res, next) => {
   const { productId } = req.params;
   const { title, description, price, count } = req.body;
   const updateFields = {};
@@ -75,7 +73,7 @@ productsRouter.patch('/:productId', requireAdmin, async (req, res, next) => {
   }
 });
 
-productsRouter.delete('/:productId', requireAdmin, async (req, res, next) => {
+productsRouter.delete('/:productId', async (req, res, next) => {
   try {
     const product = await getProductById(productId)
     const deletedProduct = await deleteProduct(product.id, { active: false })

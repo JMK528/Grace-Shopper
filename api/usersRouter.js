@@ -6,6 +6,7 @@ const { requireUser } = require('./utils');
 const {
   getAllUsers,
   getUserByUsername,
+  getUserById,
   createUser
 } = require('../db')
 
@@ -48,12 +49,12 @@ usersRouter.post('/login', async (req, res, next) => {
 
 // POST /api/users/register
 usersRouter.post('/register', async (req, res, next) => {
-  const { username, password, email, name, active, isAdmin } = req.body;
+  const { username, password, email } = req.body;
 console.log(req.body)
   try {
-    console.log("above54",username)
+    console.log(username, 'line 54 in usersRouter')
     const _user = await getUserByUsername(username);
-console.log("Something",_user)
+console.log(_user, 'line 56 in usersRouter')
     if (_user) {
       next({
         error: `api error`,
@@ -74,17 +75,13 @@ console.log("Something",_user)
       username,
       password,
       email,
-      name,
-      active,
-      isAdmin
+      // name,
+      // active,
+      // isAdmin
     });
 
-    const token = jwt.sign({
-      id: user.id,
-      username
-    }, process.env.JWT_SECRET, {
-      expiresIn: '1w'
-    });
+    console.log(email, 'line 82 of usersRouter')
+    const token = jwt.sign({ id: id, username: username }, process.env.JWT_SECRET, { expiresIn: '1w' })
 
     res.send({
       message: "thank you for signing up",
